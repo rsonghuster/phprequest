@@ -1,0 +1,19 @@
+{
+    "name": "ptcong/easyrequest",
+    "description": "A light weight PHP http client implements PSR7, use socket/curl for sending requests.",
+    "keywords": ["php", "http", "request", "curl", "socket", "php http client"],
+    "license": "MIT",
+    "authors": [{
+        "name": "Phan Thanh Cong",
+        "email": "ptcong90@gmail.com",
+        "homepage": "http://ptcong.com"
+    }],
+    "require": {
+        "php": ">=5.3",
+        "psr/http-message": "^1.0"
+    },
+    "autoload": {
+        "psr-4": { "EasyRequest\\": "src/" },
+        "files": ["src/helpers.php"]
+    }
+}

@@ -1,0 +1,6 @@
+{
+    "require": {
+        "classpreloader/classpreloader": "^3.0",
+        "psr/http-message": "^1.0"
+    }
+}
