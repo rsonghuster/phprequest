@@ -17,6 +17,8 @@ composer require "ptcong/easyrequest": "^1.0"
 composer update
 ```
 
+Sometimes you don't want to use composer, just want to include only one file as way our old library does ([ptcong/php-http-client](https://github.com/ptcong/php-http-client)). Let download `compiled.php` and include it at the top of your script.
+
 ### Usage
 * [Create a client](#create-a-request)
 * [Set request options](#set-request-options)
