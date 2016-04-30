@@ -206,7 +206,7 @@ class Client
         }
         $this->debug['end'] = microtime(true);
         $this->debug['time'] = $this->debug['end'] - $this->debug['start'];
-        return $this;
+        return $this->getResponse();
     }
     protected function prepareFollowRedirect($request, $response)
     {

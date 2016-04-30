@@ -174,7 +174,7 @@ class Client
     /**
      * Process sending request and populate response object.
      *
-     * @return self
+     * @return null|\Psr\Http\Message\ResponseInterface Returns null if sending failure
      */
     public function send()
     {
@@ -222,7 +222,7 @@ class Client
         $this->debug['end'] = microtime(true);
         $this->debug['time'] = $this->debug['end'] - $this->debug['start'];
 
-        return $this;
+        return $this->getResponse();
     }
 
     protected function prepareFollowRedirect($request, $response)
@@ -511,7 +511,7 @@ class Client
                     break;
 
                 case 'auth':
-                    if ($value !== null && !preg_match('#^[\w-_]+(?::[\w-_]+)?$#', $value)) {
+                    if ($value !== null && ! preg_match('#^[\w-_]+(?::[\w-_]+)?$#', $value)) {
                         throw new InvalidArgumentException('Value of "auth" option must be'
                                                            .' one of: string with format "user:pass" or "null".');
                     }

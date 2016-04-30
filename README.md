@@ -359,15 +359,17 @@ $request = \EasyRequest\Client::request('POST', 'http://domain.com', array(
 
 ### Get Response
 ```php
-$request = \EasyRequest\Client::request('POST', 'http://domain.com')
-    ->send();
+$request = \EasyRequest\Client::request('POST', 'http://domain.com');
+$response = $request->send();
 
 // Returns \Psr\Http\Message\RequestInterface
 var_dump($request->getRequest());
 
 // Returns \Psr\Http\Message\ResponseInterface
-// If request is not sent, this method will returns `null`
+// Or null if request is not sent or failure
 var_dump($request->getResponse());
+
+var_dump($response);
 ```
 
 When working with follow redirects option, sometimes you may want to get current url (last redirected url).
