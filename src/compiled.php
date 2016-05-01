@@ -526,7 +526,7 @@ class Cookie
     {
         $cookie = new self();
         if (is_string($data)) {
-            preg_match_all('#(?:^|\\s*)([^=;]+)(?:=([^;]+)|;|$)?\\s*#', $data, $matches, PREG_SET_ORDER);
+            preg_match_all('#(?:^|\\s*)([^=;]+)(?:=([^;]*)|;|$)?\\s*#', $data, $matches, PREG_SET_ORDER);
             foreach ($matches as $match) {
                 list(, $key, $value) = $match + array('', '', true);
                 if (is_null($cookie->name) && is_string($value)) {
