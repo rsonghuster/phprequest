@@ -108,15 +108,15 @@ $request->withOption(array(
 This methods will create new request and send immediately, you don't need to call `send()` method here.
 
 ```php
-$request = \EasyRequest\Client::get('https://google.com', 'GET', array(
+$response = \EasyRequest\Client::get('https://google.com', 'GET', array(
     'follow_redirects' => 3,
     'query'            => 'a=b&c=d'
 ));
 
-$request = \EasyRequest\Client::post('https://google.com', ...);
-$request = \EasyRequest\Client::head('https://google.com', ...);
-$request = \EasyRequest\Client::patch('https://google.com', ...);
-$request = \EasyRequest\Client::delete('https://google.com', ...);
+$response = \EasyRequest\Client::post('https://google.com', ...);
+$response = \EasyRequest\Client::head('https://google.com', ...);
+$response = \EasyRequest\Client::patch('https://google.com', ...);
+$response = \EasyRequest\Client::delete('https://google.com', ...);
 
 ... more 
 ```
