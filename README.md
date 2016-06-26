@@ -13,8 +13,7 @@ A light weight PHP http client implements PSR7, use socket/curl for sending requ
 
 ### Installation
 ```
-composer require "ptcong/easyrequest": "^1.0"
-composer update
+composer require ptcong/easyrequest:^1.0
 ```
 
 Sometimes you don't want to use composer, just want to include only one file as way our old library does ([ptcong/php-http-client](https://github.com/ptcong/php-http-client)). Let download `compiled.php` and include it at the top of your script.
