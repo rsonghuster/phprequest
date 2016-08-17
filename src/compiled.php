@@ -406,12 +406,6 @@ class Client
                     }
                     $this->options['timeout'] = (int) $value;
                     break;
-                case 'auth':
-                    if ($value !== null && !preg_match('#^[\\w-_]+(?::[\\w-_]+)?$#', $value)) {
-                        throw new InvalidArgumentException('Value of "auth" option must be' . ' one of: string with format "user:pass" or "null".');
-                    }
-                    $this->options['auth'] = $value;
-                    break;
                 default:
                     $this->options[$key] = $value;
                     break;
