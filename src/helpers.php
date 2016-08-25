@@ -3,6 +3,7 @@
 namespace EasyRequest;
 
 use EasyRequest\Psr7\Stream;
+use InvalidArgumentException;
 use Psr\Http\Message\RequestInterface;
 
 function normalize_query_rfc3986($query)
@@ -48,10 +49,10 @@ function decode_chunked($body)
     while ($pos < $len) {
         $rawnum = substr($data, $pos, strpos(substr($data, $pos), "\r\n") + 2);
         $num = hexdec(trim($rawnum));
-        $pos     += strlen($rawnum);
+        $pos += strlen($rawnum);
         $chunk = substr($data, $pos, $num);
         $outData .= $chunk;
-        $pos     += strlen($chunk);
+        $pos += strlen($chunk);
     }
 
     return $outData;
