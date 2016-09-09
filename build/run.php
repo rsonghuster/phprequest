@@ -3,7 +3,7 @@ require __DIR__.'/vendor/autoload.php';
 
 $files = require __DIR__.'/files.php';
 
-$outputFile = __DIR__.'/../src/compiled.php';
+$outputFile = __DIR__.'/compiled.php';
 $strictTypes = false;
 $stripComments = true;
 
