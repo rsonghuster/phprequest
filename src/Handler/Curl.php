@@ -68,8 +68,8 @@ class Curl implements HandlerInterface
         }
 
         $header_size = inval($curlInfo["header_size"]);
-		$header = substr($result, 0, $header_size);
-		$body = substr($result, $header_size);
+        $header = substr($result, 0, $header_size);
+        $body = substr($result, $header_size);
         
         return Response::parse($header, $body);
     }
