@@ -60,14 +60,17 @@ class Curl implements HandlerInterface
         $ch = curl_init();
         curl_setopt_array($ch, $curlOptions);
         $result = curl_exec($ch);
+        $curlInfo = curl_getinfo($ch);
         curl_close($ch);
 
         if ($result === false) {
             throw new Exception(sprintf('%d - %s', curl_errno($ch), curl_error($ch)));
         }
 
-        list($header, $body) = explode("\r\n\r\n", $result, 2) + array('', '');
-
+        $header_size = inval($curlInfo["header_size"]);
+		$header = substr($result, 0, $header_size);
+		$body = substr($result, $header_size);
+        
         return Response::parse($header, $body);
     }
 }
