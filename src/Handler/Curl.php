@@ -57,19 +57,29 @@ class Curl implements HandlerInterface
             $curlOptions[CURLOPT_INTERFACE] = $options['bindto'];
         }
 
+        $header = $body = '';
+        $curlOptions[CURLOPT_HEADERFUNCTION] = $this->handleResponseHeader($header);
+
         $ch = curl_init();
         curl_setopt_array($ch, $curlOptions);
         $result = curl_exec($ch);
-        $headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
         curl_close($ch);
 
         if ($result === false) {
             throw new Exception(sprintf('%d - %s', curl_errno($ch), curl_error($ch)));
         }
 
-        $header = substr($result, 0, $headerSize);
-		$body = substr($result, $headerSize);
-        
+        $body = substr($result, strlen($header));
+
         return Response::parse($header, $body);
+    }
+
+    private function handleResponseHeader(&$header)
+    {
+        return function ($ch, $h) use (&$header) {
+            $header .= $h;
+
+            return strlen($h);
+        };
     }
 }
