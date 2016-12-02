@@ -262,6 +262,10 @@ class Client
             $request = $request->withHeader('Authorization', 'Basic '.base64_encode($this->options['auth']));
         }
 
+        if ($this->options['default_header']) {
+            $this->withGeneralHeaders();
+        }
+
         foreach ($this->options['header'] as $name => $values) {
             $request = $request->withHeader($name, $values);
         }
@@ -322,10 +326,6 @@ class Client
 
         if ($this->options['proxy'] && $this->options['proxy_type'] === null) {
             $this->options['proxy_type'] = self::PROXY_HTTP;
-        }
-
-        if ($this->options['default_header']) {
-            $this->withGeneralHeaders();
         }
 
         // create new CookieJar if not set.
