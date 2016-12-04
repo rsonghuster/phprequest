@@ -37,15 +37,15 @@ class Client
      *
      * @var array
      */
-    public static $defaultOptions = array(
+    public static $defaultOptions = [
         'protocol_version' => '1.1',
         'method'           => 'GET',
-        'header'           => array(),
+        'header'           => [],
         'body'             => '',
         'body_as_json'     => false,
-        'query'            => array(),
-        'form_param'       => array(),
-        'multipart'        => array(),
+        'query'            => [],
+        'form_param'       => [],
+        'multipart'        => [],
         'default_header'   => true,    // add general headers as browser does
         'upload'           => false,   // wanna upload large files ?
         'cookie_jar'       => null,    // file path or CookieJarInterface
@@ -60,20 +60,20 @@ class Client
         'nobody'           => false,   // get header only, you also can use HEAD method
         'follow_redirects' => false,   // boolean or integer (number of max follow redirect)
         'handler'          => null,    // handler for sending request
-        'curl'             => array(), // use more curl options ?
-    );
+        'curl'             => [], // use more curl options ?
+    ];
 
     /**
      * Array of options.
      *
      * @var array
      */
-    protected $options = array();
+    protected $options = [];
 
-    protected $requests = array();
-    protected $responses = array();
+    protected $requests = [];
+    protected $responses = [];
     protected $error;
-    protected $debug = array();
+    protected $debug = [];
 
     /**
      * Create new request.
@@ -83,9 +83,9 @@ class Client
      *
      * @return self
      */
-    public static function request($url, $method = 'GET', array $options = array())
+    public static function request($url, $method = 'GET', array $options = [])
     {
-        return new self($url, array('method' => $method) + $options);
+        return new self($url, ['method' => $method] + $options);
     }
 
     /**
@@ -94,7 +94,7 @@ class Client
      * @param string $url
      * @param array  $options
      */
-    private function __construct($url, array $options = array())
+    private function __construct($url, array $options = [])
     {
         $this->requests[0] = new Request($url);
         $this->options = self::$defaultOptions;
@@ -188,11 +188,6 @@ class Client
 
         try {
             while (true) {
-                // already added when create this instance.
-                if ($redirectedCount > 0) {
-                    $this->requests[] = $request;
-                }
-
                 $domain = $request->getHeaderLine('Host');
                 $path = $request->getUri()->getPath();
 
@@ -200,6 +195,8 @@ class Client
                 if ($jar->count()) {
                     $request = $request->withHeader('Cookie', (string) $jar);
                 }
+
+                $this->requests[$redirectedCount] = $request;
 
                 $this->responses[] = $response = $handler->send($request, $this->options);
                 $cookieJar->fromResponse($response, $domain, $path);
@@ -239,7 +236,7 @@ class Client
             $uri = $uri->withPath(preg_replace('#[^/]*$#', '', $uri->getPath()).$location);
         }
 
-        $headers = $this->options['default_header'] ? $this->getGeneralHeaders() : array();
+        $headers = $this->options['default_header'] ? $this->getGeneralHeaders() : [];
 
         if ($userAgent = $request->getHeaderLine('User-Agent')) {
             $headers['User-Agent'] = $userAgent;
@@ -345,12 +342,12 @@ class Client
 
     protected function getGeneralHeaders()
     {
-        return array(
+        return [
             'Accept'          => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
             'Accept-Encoding' => 'gzip, deflate',
             'Accept-Language' => 'en-US,en;q=0.5',
             'User-Agent'      => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:45.0) Gecko/20100101 Firefox/45.0'
-        );
+        ];
     }
 
     /**
@@ -373,10 +370,10 @@ class Client
     {
         static $exists;
         if (! $exists) {
-            $exists = array(
+            $exists = [
                 self::HANDLER_CURL   => function_exists('curl_init'),
                 self::HANDLER_SOCKET => function_exists('stream_socket_client')
-            );
+            ];
         }
         if ($this->options['handler'] !== null) {
             $handler = $this->options['handler'];
@@ -450,7 +447,7 @@ class Client
                     break;
 
                 case 'header':
-                    $this->options['header'] = array();
+                    $this->options['header'] = [];
                     if (! is_array($value)) {
                         throw new InvalidArgumentException('Value of "header" option must be array');
                     }
@@ -458,7 +455,7 @@ class Client
                         if (is_int($key) && is_string($values)) {
                             list($k, $v) = explode(':', $values, 2);
                             if (! isset($this->options['header'][$k])) {
-                                $this->options['header'][$k] = array();
+                                $this->options['header'][$k] = [];
                             }
                             $this->options['header'][$k][] = $v;
                         } else {
@@ -484,13 +481,13 @@ class Client
                     break;
 
                 case 'multipart':
-                    $this->options['multipart'] = array();
+                    $this->options['multipart'] = [];
 
                     foreach ($value as $part) {
                         $this->withMultipart(
                             $part['name'], $part['contents'],
                             isset($part['filename']) ? $part['filename'] : null,
-                            isset($part['headers']) ? $part['headers'] : array()
+                            isset($part['headers']) ? $part['headers'] : []
                         );
                     }
                     break;
@@ -523,12 +520,13 @@ class Client
     /**
      * Add query string to request.
      *
-     * @param  string|array $name      This value may be:
-     *                                 - a query string
-     *                                 - array of query string
-     * @param  null|string  $value
-     * @param  bool         $append
-     * @param  bool         $recursive
+     * @param string|array $name      This value may be:
+     *                                - a query string
+     *                                - array of query string
+     * @param null|string  $value
+     * @param bool         $append
+     * @param bool         $recursive
+     *
      * @return self
      */
     public function withQuery($name, $value = null, $append = true, $recursive = false)
@@ -541,12 +539,13 @@ class Client
     /**
      * Add form param to request.
      *
-     * @param  string|array $name      This value may be:
-     *                                 - query string
-     *                                 - array of query string
-     * @param  null|string  $value
-     * @param  bool         $append
-     * @param  bool         $recursive
+     * @param string|array $name      This value may be:
+     *                                - query string
+     *                                - array of query string
+     * @param null|string  $value
+     * @param bool         $append
+     * @param bool         $recursive
+     *
      * @return self
      */
     public function withFormParam($name, $value = null, $append = true, $recursive = false)
@@ -559,15 +558,16 @@ class Client
     /**
      * Add a form file to request.
      *
-     * @param  string      $name
-     * @param  string      $path
-     * @param  null|string $filename
-     * @param  array       $headers
+     * @param string      $name
+     * @param string      $path
+     * @param null|string $filename
+     * @param array       $headers
+     *
      * @return self
      */
-    public function withFormFile($name, $path, $filename = null, array $headers = array())
+    public function withFormFile($name, $path, $filename = null, array $headers = [])
     {
-        $headers += array('Content-Transfer-Encoding' => 'binary');
+        $headers += ['Content-Transfer-Encoding' => 'binary'];
 
         if (empty($headers['Content-Type']) && $mimeType = mimetype_from_filename($path)) {
             $headers['Content-Type'] = $mimeType;
@@ -579,20 +579,21 @@ class Client
     /**
      * Add multipart data to reuqest.
      *
-     * @param  name            $name
-     * @param  string|resource $contents
-     * @param  null|string     $filename
-     * @param  array           $headers
+     * @param name            $name
+     * @param string|resource $contents
+     * @param null|string     $filename
+     * @param array           $headers
+     *
      * @return self
      */
-    public function withMultipart($name, $contents, $filename = null, array $headers = array())
+    public function withMultipart($name, $contents, $filename = null, array $headers = [])
     {
-        $this->options['multipart'][$name] = array(
+        $this->options['multipart'][$name] = [
             'name'     => $name,
             'contents' => $contents,
             'filename' => $filename,
             'headers'  => $headers
-        );
+        ];
 
         return $this;
     }
@@ -600,15 +601,16 @@ class Client
     /**
      * Add request body.
      *
-     * @param  string|resource $body
+     * @param string|resource $body
+     *
      * @return self
      */
     public function withBody($body)
     {
-        return $this->withOption(array(
+        return $this->withOption([
             'body_as_json' => false,
             'body'         => $body
-        ));
+        ]);
     }
 
     /**
@@ -616,8 +618,10 @@ class Client
      * of a request. A Content-Type header of application/json will be added
      * if no Content-Type header is already present on the message.
      *
-     * @param  array|string              $json Json string or array
+     * @param array|string $json Json string or array
+     *
      * @throws \InvalidArgumentException if value is invalid
+     *
      * @return self
      *
      */
@@ -630,10 +634,10 @@ class Client
             }
         }
 
-        return $this->withOption(array(
+        return $this->withOption([
             'body_as_json' => true,
             'body'         => json_encode($json)
-        ));
+        ]);
     }
 
     /**
@@ -664,17 +668,19 @@ class Client
      * @param null|string $proxy   ip:port
      * @param null|string $userPwd user:pass
      * @param int
+     *
      * @throws \InvalidArgumentException if proxy is invalid.
+     *
      * @return self
      */
     public function withProxy($proxy, $userPwd = null, $type = self::PROXY_HTTP)
     {
         if ($proxy === null) {
-            return $this->withOption(array(
+            return $this->withOption([
                 'proxy'         => null,
                 'proxy_userpwd' => null,
                 'proxy_type'    => null,
-            ));
+            ]);
         }
 
         if ($userPwd !== null && ! preg_match('#[\w-_]+(?::[\w-_]+)?#', $userPwd)) {
@@ -682,19 +688,21 @@ class Client
                                                .'string with format "user:pass" or "null".');
         }
 
-        return $this->withOption(array(
+        return $this->withOption([
             'proxy'         => $proxy,
             'proxy_userpwd' => $userPwd,
             'proxy_type'    => $type,
-        ));
+        ]);
     }
 
     /**
      * Sets HTTP proxy.
      *
-     * @param  string                    $proxy
-     * @param  null|string               $userPwd
+     * @param string      $proxy
+     * @param null|string $userPwd
+     *
      * @throws \InvalidArgumentException if proxy is invalid.
+     *
      * @return self
      */
     public function withHttpProxy($proxy, $userPwd = null)
@@ -705,9 +713,11 @@ class Client
     /**
      * Sets Socks5 proxy.
      *
-     * @param  string                    $proxy
-     * @param  null|string               $userPwd
+     * @param string      $proxy
+     * @param null|string $userPwd
+     *
      * @throws \InvalidArgumentException if proxy is invalid.
+     *
      * @return self
      */
     public function withSocks5Proxy($proxy, $userPwd = null)
@@ -718,7 +728,8 @@ class Client
     /**
      * Sets Socks4 proxy.
      *
-     * @param  string $proxy
+     * @param string $proxy
+     *
      * @return self
      */
     public function withSocks4Proxy($proxy)
@@ -733,12 +744,13 @@ class Client
      * @param array  $args
      *
      * @throws \Exception if method given is not defined.
+     *
      * @return self
      *
      */
     public static function __callStatic($method, $args)
     {
-        static $methods = array(
+        static $methods = [
             'OPTIONS' => 1,
             'GET'     => 1,
             'HEAD'    => 1,
@@ -747,10 +759,10 @@ class Client
             'DELETE'  => 1,
             'TRACE'   => 1,
             'CONNECT' => 1
-        );
+        ];
 
         if (! empty($methods[strtoupper($method)])) {
-            return self::request($args[0], $method, isset($args[1]) ? $args[1] : array())->send();
+            return self::request($args[0], $method, isset($args[1]) ? $args[1] : [])->send();
         }
 
         throw new Exception(sprintf('Method "%s" is not defined.', $method));
@@ -759,15 +771,16 @@ class Client
     /**
      * Dynamic method to custom request.
      *
-     * @param  string $method
-     * @param  array  $args
+     * @param string $method
+     * @param array  $args
+     *
      * @return mixed
      */
     public function __call($method, $args)
     {
         if (method_exists($this->requests[0], $method)) {
             if (stripos($method, 'with') === 0) {
-                $this->requests[0] = call_user_func_array(array($this->requests[0], $method), $args);
+                $this->requests[0] = call_user_func_array([$this->requests[0], $method], $args);
 
                 return $this;
             }
