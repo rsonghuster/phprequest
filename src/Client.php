@@ -8,6 +8,7 @@ use EasyRequest\Cookie\FileCookieJar;
 use EasyRequest\Handler\HandlerInterface;
 use EasyRequest\Psr7\AppendStream;
 use EasyRequest\Psr7\Request;
+use EasyRequest\Psr7\Response;
 use EasyRequest\Psr7\Uri;
 use Exception;
 use InvalidArgumentException;
@@ -114,11 +115,11 @@ class Client
     /**
      * Returns response.
      *
-     * @return null|\Psr\Http\Message\ResponseInterface
+     * @return \Psr\Http\Message\ResponseInterface
      */
     public function getResponse()
     {
-        return $this->responses ? end($this->responses) : null;
+        return $this->responses ? end($this->responses) : new Response;
     }
 
     /**
@@ -174,7 +175,7 @@ class Client
     /**
      * Process sending request and populate response object.
      *
-     * @return null|\Psr\Http\Message\ResponseInterface Returns null if sending failure
+     * @return \Psr\Http\Message\ResponseInterface
      */
     public function send()
     {
