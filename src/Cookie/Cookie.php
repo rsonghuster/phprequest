@@ -79,7 +79,7 @@ class Cookie
 
     public function __toString()
     {
-        return $this->name ? sprintf('%s=%s;', $this->name, $this->value) : '';
+        return $this->name ? sprintf('%s=%s;', $this->name, urlencode($this->value)) : '';
     }
 
     public function toArray()
