@@ -326,7 +326,7 @@ $request->withJson(json_encode(array(1,2,3)));
 You may use a HTTP or SOCKS4, SOCKS4A, SOCKS5 Proxy.
 
 ```php
-$request = \EasyRequest\Client::request('POST', 'http://domain.com', array(
+$request = \EasyRequest\Client::request('http://domain.com', 'POST', array(
     'proxy'         => '192.168.1.105:8888',
     'proxy_userpwd' => 'user:pass',
     'proxy_type'    => Client::PROXY_SOCKS5, // if not given, it will use this proxy as HTTP_PROXY
@@ -344,21 +344,21 @@ $request->withHttpProxy('192.168.1.105:8888', 'user:pass');
 
 #### Auth basic
 ```php
-$request = \EasyRequest\Client::request('POST', 'http://domain.com', array(
+$request = \EasyRequest\Client::request('http://domain.com', 'POST', array(
     'auth' => 'user:pass',
 ));
 ```
 
 #### Bind request to interface
 ```php
-$request = \EasyRequest\Client::request('POST', 'http://domain.com', array(
+$request = \EasyRequest\Client::request('http://domain.com', 'POST', array(
     'bindto' => '123.123.123.123', // same as CURLOPT_INTERFACE option
 ));
 ```
 
 ### Get Response
 ```php
-$request = \EasyRequest\Client::request('POST', 'http://domain.com');
+$request = \EasyRequest\Client::request('http://domain.com', 'POST');
 $response = $request->send();
 
 // Returns \Psr\Http\Message\RequestInterface

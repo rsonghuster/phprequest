@@ -63,10 +63,12 @@ class Curl implements HandlerInterface
         $ch = curl_init();
         curl_setopt_array($ch, $curlOptions);
         $result = curl_exec($ch);
+        $errerNum = curl_errno($ch);
+        $errorMsg = curl_error($ch);
         curl_close($ch);
 
         if ($result === false) {
-            throw new Exception(sprintf('%d - %s', curl_errno($ch), curl_error($ch)));
+            throw new Exception(sprintf('%d - %s', $errerNum, $errorMsg));
         }
 
         $body = substr($result, strlen($header));
