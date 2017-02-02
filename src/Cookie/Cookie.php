@@ -30,8 +30,8 @@ class Cookie
                 list(, $key, $value) = $match + array('', '', true);
 
                 if (is_null($cookie->name) && is_string($value)) {
-                    $cookie->name = $key;
-                    $cookie->value = urldecode($value);
+                    $cookie->name = ltrim($key);
+                    $cookie->value = $value;
                 } else {
                     $key = str_replace('-', '', strtolower($key));
                     if (! property_exists($cookie, $key)) {
