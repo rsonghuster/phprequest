@@ -71,7 +71,7 @@ class Curl implements HandlerInterface
             throw new Exception(sprintf('%d - %s', $errerNum, $errorMsg));
         }
 
-        $body = substr($result, strlen($header));
+        $body = substr($result, strlen($header)) ?: '';
 
         return Response::parse($header, $body);
     }
