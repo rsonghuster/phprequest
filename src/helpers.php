@@ -75,10 +75,8 @@ function stream_for($content)
 
         case 'string':
             $fp = fopen('php://temp', 'w+');
-            if ($content) {
-                fwrite($fp, $content);
-                rewind($fp);
-            }
+            fwrite($fp, (string) $content);
+            rewind($fp);
 
             return new Stream($fp);
 
