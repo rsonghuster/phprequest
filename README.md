@@ -25,7 +25,7 @@ Sometimes you don't want to use composer, just want to include only one file as 
 * [Add headers to request](#add-header-to-request)
 * [Working with cookies (set, get)](#working-with-cookies)
 * [Add query string](#add-query-string)
-* [Add form param (post form)](#add-form-param)
+* [Add form params (post form)](#add-form-param)
 * [Add multipart data](#add-multipart-data)
 * [Upload file](#upload-file)
 * [Post raw data](#post-raw-data)
@@ -62,7 +62,7 @@ $request = \EasyRequest\Client::request('https://google.com', 'POST', array(
     'body'             => '',
     'body_as_json'     => false,
     'query'            => array(),
-    'form_param'       => array(),
+    'form_params'       => array(),
     'multipart'        => array(),
     'default_header'   => true,    // add general headers as browser does
     'upload'           => false,   // wanna upload large files ?
@@ -84,7 +84,7 @@ $request = \EasyRequest\Client::request('https://google.com', 'POST', array(
 
 #### Set request options
 
-`withOption` method will overide to existing option. If you want to append query string, form param to current option, read it under.
+`withOption` method will overide to existing option. If you want to append query string, form params to current option, read it under.
 
 ```php
 $request = \EasyRequest\Client::request('https://google.com', 'GET', array(
@@ -247,7 +247,7 @@ $request->withQuery('query', 'value1');
 $request->withQuery('query', 'value1', false);
 ```
 
-#### Add form param
+#### Add form params
 
 This is similar with [Add query string](#add-query-string)
 
