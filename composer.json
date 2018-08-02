@@ -1,12 +1,11 @@
 {
-    "name": "ptcong/easyrequest",
+    "name": "rsong/phprequest",
     "description": "A light weight PHP http client implements PSR7, use socket/curl for sending requests.",
     "keywords": ["php", "http", "request", "curl", "socket", "php http client"],
     "license": "MIT",
     "authors": [{
-        "name": "Phan Thanh Cong",
-        "email": "ptcong90@gmail.com",
-        "homepage": "http://ptcong.com"
+        "name": "rsong",
+        "email": "ls_huster@163.com"
     }],
     "require": {
         "php": ">=5.3",
