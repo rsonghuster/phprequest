@@ -1,5 +1,5 @@
 # Statement
-It's a copy of https://packagist.org/packages/ptcong/EasyRequest
+It's a copy of https://github.com/ptcong/easyrequest
 
 # EasyRequest
 A light weight PHP http client implements PSR7, use socket/curl for sending requests.
